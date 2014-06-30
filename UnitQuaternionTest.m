@@ -2,6 +2,15 @@ classdef UnitQuaternionTest < matlab.unittest.TestCase
     
     methods(Test)
         
+        function QuaternionOperatorTest(testCase)
+           
+            v = [1 0 0]';
+            v_end = [0 1 0]';
+            q = UnitQuaternion([0 0 1]',pi/2);
+            testCase.verifyTrue(all(abs((v<=q)-v_end)<10*eps));
+            
+        end
+        
         function toMatrixTest(testCase)
                        
             R = rotX(pi/7);
