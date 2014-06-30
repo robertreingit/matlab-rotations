@@ -95,7 +95,10 @@ classdef Quaternion
         % SIDEEFFECTS:
         % None.
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            if isa(other,'Quaternion')                
+            bQ1 = isa(obj,'Quaternion');
+            bQ2 = isa(other,'Quaternion');
+            
+            if bQ1 && bQ2
                 tmp = zeros(4,1);
                 tmp(1) = obj.par(1)*other.par(1) - ...
                    obj.par(2:4)'*other.par(2:4);
@@ -103,8 +106,11 @@ classdef Quaternion
                    other.par(1) * obj.par(2:4) + ...
                    cross(obj.par(2:4),other.par(2:4));
                 obj.par = tmp;
-            else
+            elseif bQ1
                 obj.par = obj.par * other;
+            else
+                other.par = obj * other.par;
+                obj = other;
             end
         end
         
