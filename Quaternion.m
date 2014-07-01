@@ -40,6 +40,19 @@ classdef Quaternion
             end
         end
         
+        function p = para(obj)
+        % parameter Returns Quaternion parameters
+        % Mainly for debugging.
+        % INPUT:
+        % obj = Quaternion object
+        % OUTPUT:
+        % p = parameters e R^4
+        % SIDEEFFECTS:
+        % None.
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            p = obj.par;
+        end
+        
         function b = eq(obj,other)
         % eq Equality operator
         % b = obj == other

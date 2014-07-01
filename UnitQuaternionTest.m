@@ -2,8 +2,20 @@ classdef UnitQuaternionTest < matlab.unittest.TestCase
     
     methods(Test)
         
-        function QuaternionOperatorTest(testCase)
+        function UnitQuatertionMulTest(testCase)
            
+            q1 = UnitQuaternion([1 1 1],0.345);
+            q2 = Quaternion(1:4);
+            s = 35.43435343;
+            testCase.verifyTrue(isa(q1*q1,'UnitQuaternion'));
+            testCase.verifyTrue(isa(q1*q2,'Quaternion') && ~isa(q1*q2,'UnitQuaternion'));
+            testCase.verifyTrue(~isa(q1*s,'UnitQuaternion') && isa(q1*s,'Quaternion'));
+            testCase.verifyTrue(~isa(s*q1,'UnitQuaternion') && isa(s*q1,'Quaternion'));
+            
+        end
+        
+        function QuaternionOperatorTest(testCase)
+            
             testFunc = @(v1,q1,v2) all(abs((v1<=q1)-v2)<10*eps);
             
             % rotate x-vector around z-axis by pi/2
@@ -20,6 +32,22 @@ classdef UnitQuaternionTest < matlab.unittest.TestCase
             q = UnitQuaternion([1 0 0],pi/4);
             testCase.verifyTrue(abs(norm(v<=q)-norm(v))<10*eps);
             testCase.verifyTrue(testFunc(v,q,v_end));
+            
+            % testing operator sequences
+            q1 = UnitQuaternion([1 0 0],pi/4);
+            q2 = UnitQuaternion([1 0 0],pi/2);
+            q_res = q1 * q1;
+            testCase.verifyTrue(UnitQuaternionTest.compareQuaternionsEPS(q2,q_res));
+            
+            q1 = UnitQuaternion([0 1 0],pi/3);
+            q2 = UnitQuaternion([0 1 0],2*pi/3);
+            q_res = q1 * q1;
+            testCase.verifyTrue(UnitQuaternionTest.compareQuaternionsEPS(q2,q_res));
+            
+            q1 = UnitQuaternion([0 0 1],0.8);
+            q2 = UnitQuaternion([0 0 1],1.6);
+            q_res = q1 * q1;
+            testCase.verifyTrue(UnitQuaternionTest.compareQuaternionsEPS(q2,q_res));
             
         end
         
@@ -71,6 +99,14 @@ classdef UnitQuaternionTest < matlab.unittest.TestCase
             end
             
             b = all(all(abs(R1-R2)<factor*eps));
+        end
+        
+        function b = compareQuaternionsEPS(q1,q2,factor)
+           if nargin == 2
+               factor = 1;
+           end
+           
+           b = all(abs(q1.para() - q2.para())<factor*eps);
         end
         
     end % private helper methods

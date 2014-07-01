@@ -29,7 +29,7 @@ classdef UnitQuaternion < Quaternion
                         arg1 = arg1 / norm(arg1);
                     end
                     par = arg1;
-                    tmp_angle = 2*acos(par(1));
+                    tmp_angle = acos(par(1));
                     tmp_axis = par(2:4)/norm(par(2:4));
                     
                 case 2
@@ -57,6 +57,32 @@ classdef UnitQuaternion < Quaternion
             obj.angle = tmp_angle;
             
         end % UnitQuaternion c'tor
+        
+        function robj = mtimes(this,that)
+        % mtimes quaternion product
+        % Just passed the object to the mtimes@Quaternion for proper
+        % Quaternion multiplication. Subsequently, if both objects are
+        % UnitQuaternions the result is wrapped into a UnitQuaternion
+        % object. Attention, the result is renormalized if necessary which
+        % might lead to numerical problems.
+        % INPUT:
+        % this = Quaternion or scalar
+        % that = Quaternion or scalar
+        % OUTPUT:
+        % robj = Either Quaternion or UnitQuaternion
+        % SIDEEFFECTS:
+        % None.
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        
+            tmp_obj = mtimes@Quaternion(this,that);
+            
+            if isa(this,'UnitQuaternion') && isa(that,'UnitQuaternion')
+                robj = UnitQuaternion(tmp_obj.par);
+            else
+                robj = Quaternion(tmp_obj.par);
+            end
+            
+        end
         
         function w = le(v,obj)
         % less than overloaded to quaternion operator
@@ -111,23 +137,27 @@ classdef UnitQuaternion < Quaternion
             
         end
         
-        function obj = slerp(obj,other,t)
+        function obj = slerp(q1,q2,t)
         % slerp
         % Spherical linear interpolation
         % INPUT:
+        % obj = Quaternion object
+        % other = Quaternion object
+        % t = interpolation parameter obj = 0 <= t <= 1 = other
         % OUTPUT:
         % SIDEEFFECTS:
         % None.
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            dot = obj.par'*other.par;
+            dot = q1.par'*q2.par;
             if dot > 1
                 dot = 1;
             elseif dot < -1
                 dot = -1;
             end
             omega = acos(dot);
-            obj = obj*sin((1-t)*omega) + other*sin(t*omega);
-            obj = obj * (1/ sin(omega));
+            tmp_par = q1.par*(sin((1-t)*omega)/sin(omega)) + ...
+                q2.par*(sin(t*omega)/sin(omega));
+            obj = UnitQuaternion(tmp_par);
             
         end
         
