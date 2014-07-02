@@ -67,13 +67,18 @@ classdef UnitQuaternion < Quaternion
         % might lead to numerical problems.
         % INPUT:
         % this = Quaternion or scalar
-        % that = Quaternion or scalar
+        % that = Quaternion or scalar or vector e R^3
         % OUTPUT:
         % robj = Either Quaternion or UnitQuaternion
         % SIDEEFFECTS:
         % None.
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
+            if ~isa(that,'UnitQuaternion') && numel(that) == 3
+                robj = that <= this;
+                return;
+            end
+            
             tmp_obj = mtimes@Quaternion(this,that);
             
             if isa(this,'UnitQuaternion') && isa(that,'UnitQuaternion')

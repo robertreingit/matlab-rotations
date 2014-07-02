@@ -25,6 +25,7 @@ classdef UnitQuaternionTest < matlab.unittest.TestCase
             
             testCase.verifyTrue(abs(norm(v<=q)-norm(v))<eps);
             testCase.verifyTrue(testFunc(v,q,v_end));
+            testCase.verifyTrue(all(abs(v_end-q*v)<10*eps));
             
             % rotate vector [1 1 1]' into x-z-plane          
             v = [1 1 1]';
@@ -106,7 +107,7 @@ classdef UnitQuaternionTest < matlab.unittest.TestCase
                factor = 1;
            end
            
-           b = all(abs(q1.para() - q2.para())<factor*eps);
+           b = all(abs(q1.wxyz() - q2.wxyz())<factor*eps);
         end
         
     end % private helper methods

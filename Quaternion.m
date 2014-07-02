@@ -40,7 +40,23 @@ classdef Quaternion
             end
         end
         
-        function p = para(obj)
+        function v = w(obj)
+            v =  obj.par(1);
+        end
+        
+        function v = x(obj)
+            v = obj.par(2);
+        end
+        
+        function v = y(obj)
+            v = obj.par(3);
+        end
+        
+        function v = z(obj)
+            v = obj.par(4);
+        end        
+        
+        function p = wxyz(obj)
         % parameter Returns Quaternion parameters
         % Mainly for debugging.
         % INPUT:
