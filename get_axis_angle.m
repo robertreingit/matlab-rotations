@@ -1,5 +1,7 @@
 function [axis,angle] = get_axis_angle(R)
 % get_axis_angle
+% Calculates the rotation axis and the according rotation angle
+% from a rotation matrix.
 %
 % INPUT:
 % R = rotation matrix e SO(3)
