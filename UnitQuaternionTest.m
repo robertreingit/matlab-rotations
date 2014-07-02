@@ -88,6 +88,27 @@ classdef UnitQuaternionTest < matlab.unittest.TestCase
             R_calc = q.toMatrix();
             testCase.verifyTrue(UnitQuaternionTest.compareMatricesEPS(R,R_calc,10));
             
+            R = rotX(pi/7);
+            q = UnitQuaternion.fromRotMat(R);
+            testCase.verifyEqual(q.w(),cos(pi/14));
+            testCase.verifyTrue(UnitQuaternionTest.compareMatricesEPS(R,q.toMatrix(),10));
+            
+            R = rotY(0.5);
+            q = UnitQuaternion.fromRotMat(R);
+            testCase.verifyTrue(UnitQuaternionTest.compareMatricesEPS(R,q.toMatrix(),10));
+            
+            R = rotY(-1);
+            q = UnitQuaternion.fromRotMat(R);
+            testCase.verifyTrue(UnitQuaternionTest.compareMatricesEPS(R,q.toMatrix(),10));
+            
+            R = rotZ(1.3);
+            q = UnitQuaternion.fromRotMat(R);
+            testCase.verifyTrue(UnitQuaternionTest.compareMatricesEPS(R,q.toMatrix(),10));
+            
+            R = rotZ(-1.234);
+            q = UnitQuaternion.fromRotMat(R);
+            testCase.verifyTrue(UnitQuaternionTest.compareMatricesEPS(R,q.toMatrix(),10));
+            
         end
         
     end % public Test Methods

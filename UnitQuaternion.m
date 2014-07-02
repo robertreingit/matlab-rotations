@@ -94,6 +94,7 @@ classdef UnitQuaternion < Quaternion
         % Applies the Quaternion operator to 
         % the vector v and rotating therefore the vector.
         % ==> w = obj * v * obj'
+        % point rotation => frame fixed point rotates
         % Kuiper p.124
         % INPUT:
         % v = vector e R^3
@@ -183,7 +184,8 @@ classdef UnitQuaternion < Quaternion
         function obj = fromRotMat(R)
         % fromRotMat
         % Calculates a UnitQuaternion from the rotation matrix R.
-        % Relies on the get_axi_angle.m function
+        % Used the algorithm from
+        % http://www.cs.ucr.edu/~vbz/resources/quatut.pdf, p.8
         % INPUT:
         % mat = rotation matrix e SO(3)
         % OUTPUT:
@@ -192,8 +194,39 @@ classdef UnitQuaternion < Quaternion
         % None.
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
            
-            [ax,an] = get_axis_angle(R);
-            obj = UnitQuaternion(ax,an);
+            %[ax,an] = get_axis_angle(R);
+            %obj = UnitQuaternion(ax,an);
+            
+            function p = estimate_wxyz(R,x,y,z,XX,YY,ZZ)
+                s = sqrt(R(XX,XX) - (R(YY,YY)+R(ZZ,ZZ)) + 1);
+                p(x) = s * 0.5;
+                s = 0.5 / s;
+                p(y) = (R(XX,YY) + R(YY,XX)) * s;
+                p(z) = (R(YY,XX) + R(XX,ZZ)) * s;
+                p(1) = (R(ZZ,YY) - R(YY,ZZ)) * s;                
+            end
+            
+            p = zeros(4,1);
+            tr = trace(R);
+            if ( tr > eps )
+                s = sqrt(tr + 1);
+                p(1) = s * 0.5;
+                s = 0.5 / s;
+                p(2) = (R(2,3) - R(3,2))*s;
+                p(3) = (R(3,1) - R(1,3))*s;
+                p(4) = (R(1,2) - R(2,1))*s;
+            else
+                [~,idx] = max(diag(R));
+                switch idx
+                    case 1
+                        p = estimate_wxyz(R,2,3,4,1,2,3);
+                    case 2
+                        p = estimate_wxyz(R,3,4,2,2,3,1);
+                    case 3
+                        p = estimate_wxyz(R,4,2,3,3,1,2);
+                end
+            end
+            obj = UnitQuaternion(p);
             
         end % public static fromRotMat
         
