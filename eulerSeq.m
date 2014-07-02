@@ -1,7 +1,8 @@
 function Rf = eulerSeq(seq)
-% eulerSeq Generates an Euler Sequence rotation matrix.
-% The sequence describes the successive rotations around the
-% sequence angles. For example to obtain the Aeorspace sequence:
+% eulerSeq Generates a rotation matrix based on a sequence.
+% The sequence describes successive rotations around the
+% specified axes.
+% For example to obtain the Aeorspace sequence:
 % eulerSeq('zyx')
 %
 % INPUT:
