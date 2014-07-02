@@ -3,7 +3,7 @@ function R = rotZ(psi)
 % Gives the coordinates of the fixed vector v1 when 
 % the coordinates systems CS is rotated around Z by angle psi.
 % v2 = R * v1;
-% global to local
+% global to local, Point fixed - frame rotates
 % Kuiper, JB (1999), p.49, eq. 3.1
 %
 % INPUT:

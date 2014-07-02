@@ -3,7 +3,7 @@ function R = rotX(phi)
 % Gives the coordinates of the fixed vector v1 when 
 % the coordinates systems CS is rotated around X by angle phi.
 % v2 = R * v1;
-% global to local
+% global to local, Point fixed - frame rotates
 % Kuiper, JB (1999), p.51, eq. 3.3
 %
 % INPUT:
