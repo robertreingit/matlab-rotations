@@ -4,6 +4,7 @@ function Rf = eulerSeq(seq)
 % specified axes.
 % For example to obtain the Aeorspace sequence:
 % eulerSeq('zyx')
+% The Rotation matrices follow a point fixed - frame rotates convention.
 %
 % INPUT:
 % seq = Sequence of euler axis as strings {xyzXYZ} are allowed.
