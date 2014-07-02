@@ -21,6 +21,17 @@ classdef AxisAngleTest < matlab.unittest.TestCase
             testCase.verifyTrue(all(abs(ax-axis)<eps));
             testCase.verifyTrue(abs(an-angle)<eps);
             
+            angle = -1.3;
+            R2 = rotZ(angle);
+            axis = [0 0 1]';
+            [ax,an] = get_axis_angle(R2);
+            if ( abs(ax'*axis+1) < eps )
+                ax = -1*ax;
+                an = -1*an;
+            end
+            testCase.verifyTrue(all(abs(ax-axis)<eps));
+            testCase.verifyTrue(abs(an-angle)<eps);
+            
         end
         
     end % public Test methods
