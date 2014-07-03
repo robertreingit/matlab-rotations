@@ -23,12 +23,30 @@ if ( 1 == nargin )
     az = az(1);
 end
 
-cosaz = cos(az);
-sinaz = sin(az);
-sinel = sin(el);
-cosel = cos(el);
-cosro = cos(ro);
-sinro = sin(ro);
+if abs(az) < eps
+    cosaz = 1;
+    sinaz = 0;
+else
+    cosaz = cos(az);
+    sinaz = sin(az);
+end
+
+if abs(el) < eps
+    cosel = 1;
+    sinel = 0;
+else    
+    sinel = sin(el);
+    cosel = cos(el);
+end
+
+if abs(ro) < eps
+    cosro = 1;
+    sinro = 0;
+else
+    cosro = cos(ro);
+    sinro = sin(ro);
+end
+
 matr = zeros(3,3);
 
 matr(1,1) = cosaz*cosel;

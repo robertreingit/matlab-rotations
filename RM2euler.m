@@ -10,7 +10,11 @@ function euler_angles = RM2euler(rmat)
 % euler_angles   = [azimuth,elevation,roll]
 %#######################################################
 
-el = -asin(rmat(1,3));
+if abs(rmat)<eps
+    el = 0;
+else
+    el = -asin(rmat(1,3));
+end
 ro = atan2(rmat(2,3),rmat(3,3));
 az = atan2(rmat(1,2),rmat(1,1));
 
