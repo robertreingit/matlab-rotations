@@ -101,12 +101,30 @@ classdef UnitQuaternionTest < matlab.unittest.TestCase
             q = UnitQuaternion.fromRotMat(R);
             testCase.verifyTrue(UnitQuaternionTest.compareMatricesEPS(R,q.toMatrix(),10));
             
+            R = rotY(pi-eps);
+            q = UnitQuaternion.fromRotMat(R);
+            testCase.verifyTrue(UnitQuaternionTest.compareMatricesEPS(R,q.toMatrix(),10));
+            
             R = rotZ(1.3);
             q = UnitQuaternion.fromRotMat(R);
             testCase.verifyTrue(UnitQuaternionTest.compareMatricesEPS(R,q.toMatrix(),10));
             
             R = rotZ(-1.234);
             q = UnitQuaternion.fromRotMat(R);
+            testCase.verifyTrue(UnitQuaternionTest.compareMatricesEPS(R,q.toMatrix(),10));
+            
+        end
+        
+        function fromEulerXYZTest(testCase)
+           
+            euler_angle = [0.345,0.789,1.2434];
+            R = euler2RM(euler_angle);
+            q = UnitQuaternion.fromEulerZYX(euler_angle);
+            testCase.verifyTrue(UnitQuaternionTest.compareMatricesEPS(R,q.toMatrix(),10));
+            
+            euler_angle = [-1.234,0.987,-0.876];
+            R = euler2RM(euler_angle);
+            q = UnitQuaternion.fromEulerZYX(euler_angle);
             testCase.verifyTrue(UnitQuaternionTest.compareMatricesEPS(R,q.toMatrix(),10));
             
         end

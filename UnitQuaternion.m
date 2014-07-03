@@ -202,7 +202,7 @@ classdef UnitQuaternion < Quaternion
                 p(x) = s * 0.5;
                 s = 0.5 / s;
                 p(y) = (R(XX,YY) + R(YY,XX)) * s;
-                p(z) = (R(YY,XX) + R(XX,ZZ)) * s;
+                p(z) = (R(ZZ,XX) + R(XX,ZZ)) * s;
                 p(1) = (R(ZZ,YY) - R(YY,ZZ)) * s;                
             end
             
@@ -229,6 +229,36 @@ classdef UnitQuaternion < Quaternion
             obj = UnitQuaternion(p);
             
         end % public static fromRotMat
+        
+        function q = fromEulerZYX(ang)
+        % fromEuler
+        % Calculates the UnitQuaternion q from the euler sequence ZYX
+        % Kuiper p. 207
+        % INPUT:
+        % ang = vector e R^3 [azimuth,elevation,roll]
+        % OUTPUT:
+        % q = UnitQuaternion
+        % SIDEEFFECTS:
+        % None.
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+            assert(numel(ang)==3,'Three euler angles are needed');
+            
+            cosa = cos(ang(1)/2);
+            cosb = cos(ang(2)/2);
+            cosc = cos(ang(3)/2);
+            sina = sin(ang(1)/2);
+            sinb = sin(ang(2)/2);
+            sinc = sin(ang(3)/2);
+            
+            par = zeros(4,1);
+            par(1) = cosa*cosb*cosc + sina*sinb*sinc;
+            par(2) = cosa*cosb*sinc - sina*sinb*cosc;
+            par(3) = cosa*sinb*cosc + sina*cosb*sinc;
+            par(4) = sina*cosb*cosc - cosa*sinb*sinc;
+            q = UnitQuaternion(par);
+        
+        end
         
     end % public Static methods
     
